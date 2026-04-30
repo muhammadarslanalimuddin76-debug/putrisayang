@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untuk Putri ❤️</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #fdf2f8, #fecdd3);
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            color: #881337;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 350px;
+            width: 90%;
+            z-index: 10;
+            position: relative;
+        }
+
+        h1 { margin-top: 0; font-size: 24px; }
+
+        /* Gombal Section */
+        .gombal-box {
+            background: #fff1f2;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-style: italic;
+            font-size: 14px;
+            border: 2px dashed #f472b6;
+        }
+
+        /* Music Player */
+        .player { margin-top: 20px; }
+        .song-title { font-weight: bold; margin-bottom: 10px; display: block; }
+        
+        button {
+            background: #e11d48;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+            transition: 0.2s;
+        }
+        button:hover { background: #be123c; transform: scale(1.05); }
+        
+        .play-btn {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            font-size: 24px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Heart Animation */
+        .heart {
+            position: fixed;
+            bottom: -50px;
+            font-size: 24px;
+            animation: fly 4s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes fly {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Untuk Putri ❤️</h1>
+        
+        <!-- KATA GOMBAL -->
+        <div class="gombal-box" id="textGombal">
+            Klik tombol di bawah ya...
+        </div>
+        <button onclick="gantiGombal()"> Ganti Gombalan</button>
+
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
+
+        <!-- MUSIC PLAYER -->
+        <div class="player">
+            <span class="song-title" id="songName">Loading...</span>
+            <div>
+                <button onclick="prev()">⏮</button>
+                <button class="play-btn" id="btnPlay" onclick="togglePlay()">▶</button>
+                <button onclick="next()">⏭</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. DATA LAGU (PASTIKAN NAMA FILE SAMA PERSIS) ---
+        const lagu = [
+            { nama: "Blue - Lime", file: "blue.mp3" },
+        ];
+
+        // --- 2. DATA GOMBAL ---
+        const gombal = [
+            "Kamu tau gak bedanya kamu sama jam? Kalau jam muter, kamu muter di pikiranku.",
+            "Kamu kayak WiFi ya? Gak kelihatan tapi bikin aku selalu nyambung.",
+            "Aku gak butuh peta, soalnya aku udah nemu tujuan di matamu.",
+            "Kopi aku pait, tapi kalau sama kamu jadi manis.",
+            "Kalau disuruh milih antara bernapas dan mencintaimu, aku akan pakai napas terakhir buat bilang 'I Love You'."
+        ];
+
+        // --- LOGIC PROGRAM ---
+        let idxLagu = 0;
+        let idxGombal = 0;
+        const audio = new Audio();
+        const btnPlay = document.getElementById('btnPlay');
+        const songName = document.getElementById('songName');
+        const textGombal = document.getElementById('textGombal');
+
+        // Fungsi Load Lagu
+        function loadLagu() {
+            audio.src = lagu[idxLagu].file;
+            songName.innerText = lagu[idxLagu].nama;
+            btnPlay.innerText = "▶"; // Reset jadi Play
+        }
+
+        // Fungsi Play/Pause
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                btnPlay.innerText = "⏸";
+            } else {
+                audio.pause();
+                btnPlay.innerText = "▶";
+            }
+        }
+
+        // Fungsi Next/Prev
+        function next() {
+            idxLagu = (idxLagu + 1) % lagu.length;
+            loadLagu();
+            audio.play();
+            btnPlay.innerText = "⏸";
+        }
+
+        function prev() {
+            idxLagu = (idxLagu - 1 + lagu.length) % lagu.length;
+            loadLagu();
+            audio.play();
+            btnPlay.innerText = "⏸";
+        }
+
+        // Fungsi Ganti Gombal
+        function gantiGombal() {
+            idxGombal = (idxGombal + 1) % gombal.length;
+            textGombal.style.opacity = 0;
+            setTimeout(() => {
+                textGombal.innerText = gombal[idxGombal];
+                textGombal.style.opacity = 1;
+            }, 200);
+        }
+
+        // Otomatis Next kalau lagu habis
+        audio.onended = next;
+
+        // --- ANIMASI HATI ---
+        function buatHati() {
+            const h = document.createElement('div');
+            h.classList.add('heart');
+            h.innerText = ['❤️', '💖', '🌸', '✨'][Math.floor(Math.random()*4)];
+            h.style.left = Math.random() * 100 + 'vw';
+            h.style.animationDuration = Math.random() * 2 + 3 + 's'; // 3-5 detik
+            document.body.appendChild(h);
+            
+            setTimeout(() => { h.remove(); }, 5000);
+        }
+
+        // Jalankan animasi hati setiap 500ms
+        setInterval(buatHati, 500);
+
+        // Mulai load lagu pertama
+        loadLagu();
+
+
+
+       // Auto play setelah klik pertama
+       document.body.addEventListener("click", () => {
+       audio.play();
+       }, { once: true });
+    </script>
+</body>
+</html>
